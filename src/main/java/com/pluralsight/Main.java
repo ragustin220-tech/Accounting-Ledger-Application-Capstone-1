@@ -1,6 +1,5 @@
 package com.pluralsight;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,13 +33,24 @@ public class Main {
 
     switch (choice){
         case 'D':{
+            String filePath = "transaction.csv";
+
+            Scanner input = new Scanner(System.in);
+
             System.out.println("===ADD DEPOSIT===");
+
             System.out.println(" ");
             System.out.println("Enter Date (yyyy-dd-mm): ");
+            String date = input.nextLine();
             System.out.println("Enter time (hh:mm:ss):  ");
+            String time = input.nextLine();
             System.out.println("Enter description of product or service: ");
+            String description = input.nextLine();
             System.out.println("Enter vendor name: ");
+            String vendor = input.nextLine();
             System.out.println("Enter amount:  ");
+            String amount = input.nextLine();
+            
         }
         break;
 
@@ -65,15 +75,10 @@ public class Main {
 
         }
 
-        
+
         default :
             System.out.println("Invalid choice, Please enter a capital character either D, P, L or X to exit the application. ");
 
         }
-
-
-
-
-
     }
     }
