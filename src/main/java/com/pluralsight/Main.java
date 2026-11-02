@@ -32,7 +32,13 @@ public class Main {
     switch (choice){
         case 'D':
             System.out.println("ADD DEPOSIT");
+            System.out.println("Enter Date (yyyy-dd-mm): ");
+            System.out.println("Enter time (hh:mm:ss):  ");
+            System.out.println("Enter description of product or service: ");
+            System.out.println("Enter vendor name: ");
+            System.out.println("Enter amount paid or received:  ");
             break;
+
 
         default :
             System.out.println("Invalid choice, Please enter a capital character either D, P, L or X to exit the application. ");
