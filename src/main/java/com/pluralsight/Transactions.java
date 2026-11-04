@@ -1,9 +1,9 @@
 package com.pluralsight;
 
-public class transactions {
+public class Transactions {
 
-    private int date;
-    private int time;
+    private String date;
+    private String time;
     private String description;
     private String vendor;
     private double amount;
@@ -33,23 +33,23 @@ public class transactions {
         this.description = description;
     }
 
-    public int getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public transactions(int date, int time, String description, String vendor, double amount){
+    public Transactions(String date, String time, String description, String vendor, double amount){
 
         this.date = date;
         this.time = time;
