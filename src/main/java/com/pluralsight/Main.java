@@ -16,7 +16,7 @@ public class Main {
 
         //System.out.println("\n--- ACCOUNT LEDGER---");
         // System.out.println("--- HOME SCREEN ---");
-
+        loadTransactions();
         Scanner sc = new Scanner(System.in);
 
         boolean running = true;
@@ -36,6 +36,7 @@ public class Main {
             System.out.println("Enter your choice ( D, P, L OR X): ");
 
             char choice = sc.next().charAt(0);
+            sc.nextLine();
 
             switch (choice) {
                 case 'D': {
@@ -57,6 +58,8 @@ public class Main {
                     System.out.println("Enter amount:  ");
                     String amount = input.nextLine();
 
+                    
+
                 }
                 break;
 
@@ -75,15 +78,16 @@ public class Main {
                     System.out.println("--- LEDGER MENU ---");
                     System.out.println("A) All (Display all entries)");
                     System.out.println("D) Deposit (Display only deposited entries)");
-                    System.out.println("P) Payments (Display only negative entries");
+                    System.out.println("P) Payments (Display only negative entries)");
                     System.out.println("R) Reports (run pre-defined report)");
-                    System.out.println("Enter your choice ( A, D, P, R )");
-                    String ledgerChoice = sc.nextLine().toUpperCase();
+                    System.out.println("Enter your choice ( A, D, P, R ):\n");
+                    String ledgerChoice = sc.nextLine().trim().toUpperCase();
 
-                    if (ledgerChoice.equals("A")){
+                    if (ledgerChoice.equals("A")) {
                         System.out.println("\n--- All Transactions---");
                         for (Transactions t : inventoryList) {
                             System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + " | $" + t.getAmount());
+                           // System.out.println(" ");
                         }
                     }
                 }
