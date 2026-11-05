@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -133,6 +135,7 @@ public class Main {
                         for (Transactions t : inventoryList) {
                             System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + " | $" + t.getAmount());
                         }
+
                     }
                 }
                 break;
@@ -163,8 +166,8 @@ public class Main {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.split("\\|");
                 if (parts.length == 5) {
-                    String date = parts[0].trim();
-                    String time = parts[1].trim();
+                    LocalDate date = LocalDate.parse(parts[0].trim());
+                    LocalTime time = LocalTime.parse(parts[1].trim());
                     String description = parts[2].trim();
                     String vendor = parts[3].trim();
 
