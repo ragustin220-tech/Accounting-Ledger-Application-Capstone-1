@@ -132,7 +132,6 @@ public class Main {
                         System.out.println("\n--- All Transactions---");
                         for (Transactions t : inventoryList) {
                             System.out.println(t.getDate() + "|" + t.getTime() + "|" + t.getDescription() + "|" + t.getVendor() + " | $" + t.getAmount());
-                           // System.out.println(" ");
                         }
                     }
                 }
