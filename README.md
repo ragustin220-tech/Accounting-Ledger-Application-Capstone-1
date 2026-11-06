@@ -15,6 +15,6 @@ To run the project
 
  Ledger Screen Options
 - A) All — Prints out all historical entries loaded into active list memory.
-- D) Deposits — Isolates and renders records matching an amount greater than zero.
-- P) Payments — Isolates and renders negative spending values.
+- D) Deposits — Searches for deposits based on amounts
+- P) Payments — searches for payments 
 - R) Reports — finds specific searched queries.
