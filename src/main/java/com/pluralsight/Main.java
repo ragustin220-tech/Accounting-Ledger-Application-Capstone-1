@@ -37,50 +37,75 @@ public class Main {
             System.out.println("L) Ledger");
             System.out.println("X) Exit");
             System.out.println("Enter your choice ( D, P, L OR X): ");
+            String input = sc.nextLine().trim().toUpperCase();
 
-            char choice = sc.next().charAt(0);
-            sc.nextLine();
+            if(input.isEmpty()){
+                System.out.println("Please enter a valid choice.");
+                continue;
+            }
+
+            char choice =input.charAt(0);
+
 
             switch (choice) {
-                case 'D': {
-                    String filePath = "transaction.csv";
+                case 'D':
+                    System.out.println("\n=== ADD DEPOSIT ===");
+                    System.out.print("Enter Date (yyyy-MM-dd): ");
+                    String depositDate = sc.nextLine();
 
-                    Scanner input = new Scanner(System.in);
+                    System.out.print("Enter time (hh:mm:ss): ");
+                    String depositTime = sc.nextLine();
 
-                    System.out.println("===ADD DEPOSIT===");
+                    System.out.print("Enter description of product or service: ");
+                    String depositDescription = sc.nextLine();
 
-                    System.out.println(" ");
-                    System.out.println("Enter Date (yyyy-dd-mm): ");
-                    String depositDate = input.nextLine();
-                    System.out.println("Enter time (hh:mm:ss):  ");
-                    String depositTime = input.nextLine();
-                    System.out.println("Enter description of product or service: ");
-                    String depositDescription = input.nextLine();
-                    System.out.println("Enter vendor name: ");
-                    String depositVendor = input.nextLine();
-                    System.out.println("Enter amount:  ");
-                    String depositAmountString = input.nextLine();
+                    System.out.print("Enter vendor name: ");
+                    String depositVendor = sc.nextLine();
 
-                    double depositAmount = Double.parseDouble(depositAmountString);
-                    Transactions newDeposit = new Transactions(depositDate, depositTime, depositDescription, depositVendor, depositAmount );
-                    inventoryList.add(newDeposit);
+                    double depositAmount = 0;
+                    boolean validAmount = false;
 
-                    try (java.io.FileWriter fw = new java.io.FileWriter("transactions.csv", true);
-                        java.io.BufferedWriter bw = new java.io.BufferedWriter(fw)){
+                    while (!validAmount) {
+                        System.out.print("Enter amount: ");
+                        String depositAmountString = sc.nextLine().trim();
 
-                        String line = depositDate + "|" + depositTime + "|" +depositDescription + "|" + depositVendor + "|" + depositAmountString;
+                        try {
+                            if (depositAmountString.isEmpty()) {
+                                System.out.println(" Amount cannot be empty! Please try again.");
+                                continue;
+                            }
 
-                        bw.write(line);
-                        bw.newLine();
+                            depositAmount = Double.parseDouble(depositAmountString);
+                            validAmount = true; // ⚠️ ONLY turns true if parsing succeeds!
 
-                        System.out.println("Deposit entry was saved !");
-
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter a valid number amount.");
+                        }
                     }
-                    catch (IOException e){
+
+                    try {
+                        java.time.LocalDate parsedDate = java.time.LocalDate.parse(depositDate);
+                        java.time.LocalTime parsedTime = java.time.LocalTime.parse(depositTime);
+
+                        Transactions newDeposit = new Transactions(parsedDate, parsedTime, depositDescription, depositVendor, depositAmount);
+                        inventoryList.add(newDeposit);
+
+                        try (java.io.FileWriter fw = new java.io.FileWriter("transactions.csv", true);
+                             java.io.BufferedWriter bw = new java.io.BufferedWriter(fw)) {
+
+                            String line = depositDate + "|" + depositTime + "|" + depositDescription + "|" + depositVendor + "|" + depositAmount;
+                            bw.write(line);
+                            bw.newLine();
+
+                            System.out.println("Deposit entry was saved successfully!");
+                        }
+                    } catch (java.time.format.DateTimeParseException e) {
+                        System.out.println(" Date must be in yyyy-MM-dd and Time must be hh:mm:ss. Deposit cancelled.");
+                    } catch (IOException e) {
                         System.out.println("Could not save the file. Please try again.");
                     }
-                }
-                break;
+                    break;
+
 
                 case 'P':
 
@@ -89,25 +114,27 @@ public class Main {
 
                     System.out.println(" ");
                     System.out.println("Enter Date (yyyy-dd-mm): ");
-                    String paymentDate = input2.nextLine();
+                    String paymentDate = sc.nextLine();
                     System.out.println("Enter time (hh:mm:ss):  ");
-                    String paymentTime = input2.nextLine();
+                    String paymentTime = sc.nextLine();
                     System.out.println("Enter description of product or service: ");
-                    String paymentDescription = input2.nextLine();
+                    String paymentDescription = sc.nextLine();
                     System.out.println("Enter vendor name: ");
-                    String paymentVendor = input2.nextLine();
+                    String paymentVendor = sc.nextLine();
                     System.out.println("Enter amount:  ");
-                    String paymentAmountString = input2.nextLine();
+                    String paymentAmountString = sc.nextLine();
 
                     double paymentAmount = Double.parseDouble(paymentAmountString);
-                    Transactions newpaymentAmount = new Transactions(paymentDate, paymentTime, paymentDescription, paymentVendor, paymentAmount );
+                    LocalDate parsedPaymentDate = LocalDate.parse(paymentDate);
+                    LocalTime parsedPaymentTime = LocalTime.parse(paymentTime);
+                    Transactions newpaymentAmount = new Transactions(parsedPaymentDate, parsedPaymentTime, paymentDescription, paymentVendor, paymentAmount );
                     inventoryList.add(newpaymentAmount);
 
 
                     try (java.io.FileWriter fw = new java.io.FileWriter("transactions.csv", true);
                          java.io.BufferedWriter bw = new java.io.BufferedWriter(fw)){
 
-                        String line = paymentDate + "|" + paymentTime + "|" + paymentDescription + "|" + paymentVendor + "|" + "-$" + paymentAmountString;
+                        String line = paymentDate + "|" + paymentTime + "|" + paymentDescription + "|" + paymentVendor + "|" + "-$" + paymentAmount;
 
                         bw.write(line);
                         bw.newLine();
@@ -166,12 +193,14 @@ public class Main {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.split("\\|");
                 if (parts.length == 5) {
+                    java.time.format.DateTimeFormatter timeFormatter  = java.time.format.DateTimeFormatter.ofPattern("H:mm:ss");
                     LocalDate date = LocalDate.parse(parts[0].trim());
-                    LocalTime time = LocalTime.parse(parts[1].trim());
+                    LocalTime time = LocalTime.parse(parts[1].trim(), timeFormatter);
+
                     String description = parts[2].trim();
                     String vendor = parts[3].trim();
-
-                    double amount = Double.parseDouble(parts[4].trim());
+                    String amountText = parts[4].trim().replace("$","");
+                    double amount = Double.parseDouble(amountText);
 
                     Transactions newTransactions = new Transactions(date, time, description, vendor, amount);
                     inventoryList.add(newTransactions);
